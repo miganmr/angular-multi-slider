@@ -1,0 +1,20 @@
+{
+  "name": "angular-multi-slider",
+  "version": "0.1.5",
+  "description": "angular-multi-slider Version 0.1.5 ===================",
+  "main": "multislider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miganmr/angular-multi-slider.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miganmr/angular-multi-slider/issues"
+  },
+  "homepage": "https://github.com/miganmr/angular-multi-slider#readme"
+}
