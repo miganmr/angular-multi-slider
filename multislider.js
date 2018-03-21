@@ -26,6 +26,8 @@ angular.module('angularMultiSlider', [])
     }
   })
   .directive('multiSlider', function($compile, $filter) {
+    var isDragging = false;
+
     var events = {
       mouse: {
         start: 'mousedown',
@@ -272,6 +274,15 @@ angular.module('angularMultiSlider', [])
 
           var bind = function (handle, bubble, currentRef, events) {
             var onEnd = function () {
+              if (isDragging) {
+                isDragging = false;
+                scope.$emit('angularMultiSlider.stop', {
+                  index: currentRef,
+                  slider: scope.sliders[currentRef],
+                  sliders: scope.sliders,
+                });
+              }
+
               handle.removeClass('grab');
               bubble.removeClass('grab');
               if (!(''+scope.bubbles === 'true')) {
@@ -291,6 +302,8 @@ angular.module('angularMultiSlider', [])
             };
 
             var onMove = function (event) {
+              var oldValue = scope.sliders[currentRef].value;
+
               // Suss out which event type we are capturing and get the x value
               var eventX = 0;
               if (event.clientX !== undefined) {
@@ -330,6 +343,12 @@ angular.module('angularMultiSlider', [])
               setHandles();
               overlapCheck(currentRef);
 
+              oldValue != newValue && scope.$emit('angularMultiSlider.move', {
+                index: currentRef,
+                slider: scope.sliders[currentRef],
+                sliders: scope.sliders,
+              });
+
               ngModel.$setDirty();
               scope.$apply();
             };
@@ -340,6 +359,7 @@ angular.module('angularMultiSlider', [])
                 handle.addClass('disabled');
                 return;
               }
+
               updateCalculations();
               bubble.addClass('active grab');
               handle.addClass('active grab');
@@ -347,6 +367,16 @@ angular.module('angularMultiSlider', [])
               event.stopPropagation();
               event.preventDefault();
               ngDocument.bind(events.move, onMove);
+
+              if (!isDragging) {
+                isDragging = true;
+                scope.$emit('angularMultiSlider.start', {
+                  index: currentRef,
+                  slider: scope.sliders[currentRef],
+                  sliders: scope.sliders,
+                });
+              }
+
               return ngDocument.bind(events.end, onEnd);
             };
 
