@@ -214,6 +214,9 @@ angular.module('angularMultiSlider', [])
               if (slider.color) {
                 handles[key].css({'background-color': slider.color});
               }
+              if(slider.zindex) {
+                handles[key].css({'z-index': slider.zindex});
+              }
 
               if (slider.value >= minValue && slider.value <= maxValue) {
                 offset(handles[key], pixelsToOffset(percentValue(slider.value)));
